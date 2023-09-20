@@ -1,0 +1,59 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+
+
+solvers
+{
+	p
+	{
+	solver          GAMG;
+        tolerance       1e-06;
+        relTol          0.01;
+        smoother        DICGaussSeidel;
+	}
+	pFinal
+	{
+	solver          GAMG;
+        tolerance       1e-06;
+        relTol          0.01;
+        smoother        DICGaussSeidel;
+	}
+	
+	"(U|k|epsilon)"
+	{
+	solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-6;
+        relTol          0.1;
+	}
+	"(U|k|epsilon)Final"
+	{
+	solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-6;
+        relTol          0.1;
+	}
+}
+
+PIMPLE
+{
+    correctPhi          yes;
+    nOuterCorrectors    1;
+    nCorrectors         2;
+    nNonOrthogonalCorrectors 0;
+}
+
+relaxationFactors
+{
+	equations
+	{
+	 	    "(U|k|epsilon)"   0.7;
+	 	    "(U|k|epsilon)Final"   1;
+	 	    
+	}
+}
